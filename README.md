@@ -47,7 +47,7 @@ Run
 ---
 
 ```
-python __main__.py --every 60 --low 25 --high 75
+python battery-alert.py --every 60 --low 25 --high 75
 ```
 
 This checks the battery level every 60 seconds, and raises an alarm if it goes below 25% or above 75%.
