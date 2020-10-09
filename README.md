@@ -50,18 +50,21 @@ The script has some kind of support for all 3 points.
 
 Sound alert
 -----------
-So, the first solution is to detects if the battery is too low/high, and then emits a random alert sound.
+So, the first solution is to detect if the battery level is too low/high, and then emit a random alert sound.
 The sounds are located in the `sound` folder, and can be replaced with anything, as long as they're `.ogg` or `.wav`.
 
 Because the sound is played every 60 seconds (by default), I'm not forgetting anymore.
+And it's also fun to have multiple sounds.
 
 
 Custom command
 --------------
-If you have another program or script that can stop your laptop from charging, either by deactiving an USB port
-or by directly stopping the battery, you can specify this with:
-- --run-low : this is where you want to start charging
-- --run-high : this is where you want to stop charging
+If you have another program or script that can stop your laptop from charging, or if you just want to run a custom
+command that will perform the alert better than this script, you can specify this with:
+- `--run-low` : this is where you want to start charging
+- `--run-high` : this is where you want to stop charging
+
+There's also a `--no-sound` option if you don't want any sound to be played.
 
 
 USB powered laptop
@@ -82,23 +85,23 @@ pip install -r requirements.txt
 
 This installs `psutil` and `pygame`.
 
+`Python3.6+` is also needed.
+
 
 Examples
 --------
-1)
 ```
 python battery-alert.py --every 60 --low 25 --high 75
 ```
 
 This checks the battery level every 60 seconds, and raises an alarm if it goes below 25% or above 75%.
 
-2)
 ```
 python .\battery-alert.py --high 60 --run-high 'git status'
 ```
 
 This runs `git status` when the battery goes above 60%, useless but you get the point!
-You could have it launch firefox for example.
+You could have it launch firefox or a media player for example.
 
 
 Sounds taken from
@@ -107,3 +110,5 @@ https://freesound.org/people/plasterbrain/sounds/242856/
 https://freesound.org/people/tim.kahn/sounds/83339/
 https://freesound.org/people/VABsounds/sounds/394697/
 https://freesound.org/people/Wagna/sounds/325987/
+
+They're nice sounds, and again, you're free to replace/remove them or add more!
