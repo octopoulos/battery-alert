@@ -106,9 +106,9 @@ You could have it launch firefox or a media player for example.
 
 Sounds taken from
 -----------------
-https://freesound.org/people/plasterbrain/sounds/242856/
-https://freesound.org/people/tim.kahn/sounds/83339/
-https://freesound.org/people/VABsounds/sounds/394697/
-https://freesound.org/people/Wagna/sounds/325987/
+- https://freesound.org/people/plasterbrain/sounds/242856/
+- https://freesound.org/people/tim.kahn/sounds/83339/
+- https://freesound.org/people/VABsounds/sounds/394697/
+- https://freesound.org/people/Wagna/sounds/325987/
 
 They're nice sounds, and again, you're free to replace/remove them or add more!

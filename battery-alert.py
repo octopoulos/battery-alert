@@ -60,7 +60,7 @@ class BatteryAlert:
         print(f"Battery too {text} at {percent}%, {'dis' if which == HIGH else ''}connect the cable!")
 
         # 1) play a sound
-        if not self.no_sound:
+        if not self.no_sound and self.sounds:
             index = int(random() * len(self.sounds))
             sound = self.sounds[index]
             if not sound:
@@ -107,6 +107,9 @@ class BatteryAlert:
         """Scan the sound folder
         """
         if self.no_sound:
+            return
+        if not os.path.isdir(SOUND_FOLDER):
+            print(f'Note: {SOUND_FOLDER} does not exist.')
             return
         sources = os.listdir(SOUND_FOLDER)
         self.sources = [source for source in sources if source.endswith(('.ogg', '.wav'))]
