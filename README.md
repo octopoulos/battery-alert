@@ -31,6 +31,9 @@ Some battery saving is achieved if the charge-discharge amplitude is minimized, 
 So, until now, I've been trying to constantly watch the battery status, and of course, most of the time I fail
 to notice that it's too low or too high!
 
+https://batteryuniversity.com/learn/article/how_to_prolong_lithium_based_batteries
+
+
 Solutions
 ---------
 There are 3 ways to deal with this, that I found:

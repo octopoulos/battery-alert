@@ -1,1 +1,1 @@
-py battery-alert.py --every 60 --low 30 --high 75
+py battery-alert.py --every 60 --low 36 --high 72
