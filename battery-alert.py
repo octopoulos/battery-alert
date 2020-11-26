@@ -1,6 +1,6 @@
 # coding: utf-8
 # @author octopoulo <polluxyz@gmail.com>
-# @version 2020-10-08
+# @version 2020-11-25
 
 """
 Battery alert
@@ -9,7 +9,7 @@ Battery alert
 from argparse import ArgumentParser
 import os
 from random import random, seed
-from subprocess import run
+from subprocess import CREATE_NEW_CONSOLE, Popen, run
 from time import sleep, time
 
 import psutil
@@ -38,13 +38,16 @@ def default_int(value: int or str, default: int=None) -> int or None:
 
 class BatteryAlert:
     def __init__(self, **kwargs):
-        self.devcon = kwargs.get('devcon')
-        self.every = max(default_int(kwargs.get('every'), 60), 1)
-        self.high = min(default_int(kwargs.get('high'), 75), 100)
-        self.low = max(default_int(kwargs.get('low'), 30), 1)
-        self.no_sound = kwargs.get('no_sound')
-        self.run_high = kwargs.get('run_high')
-        self.run_low = kwargs.get('run_low')
+        self.kwargs = kwargs
+
+        self.devcon = kwargs.get('devcon')                                      # type: str
+        self.every = max(default_int(kwargs.get('every'), 60), 1)               # type: int
+        self.high = min(default_int(kwargs.get('high'), 75), 100)               # type: int
+        self.low = max(default_int(kwargs.get('low'), 30), 1)                   # type: int
+        self.no_sound = kwargs.get('no_sound')                                  # type: bool
+        self.run_high = kwargs.get('run_high')                                  # type: int
+        self.run_low = kwargs.get('run_low')                                    # type: int
+        self.run_wakeup = kwargs.get('run_wakeup')                              # type: str
 
         print(f'Battery alert: devon={self.devcon} every={self.every} low={self.low} high={self.high}')
         self.sounds = []
@@ -88,20 +91,37 @@ class BatteryAlert:
     def go(self):
         """Infinite loop
         """
-        seed(int(time()))
+        check = 0
+        start = time()
+        seed(int(start))
         mixer.init()
 
         while True:
-            battery = psutil.sensors_battery()
-            percent = battery.percent
+            # check battery %
+            last = time()
+            if last >= check + self.every:
+                check = last
+                battery = psutil.sensors_battery()
+                percent = battery.percent
 
-            if battery.power_plugged:
-                if percent > self.high:
-                    self.alert(HIGH, percent)
-            elif percent < self.low:
-                self.alert(LOW, percent)
+                if battery.power_plugged:
+                    if percent > self.high:
+                        self.alert(HIGH, percent)
+                elif percent < self.low:
+                    self.alert(LOW, percent)
 
-            sleep(self.every)
+            # sleep
+            sleep((self.every + 1) // 2)
+
+            # detect if computer woke up
+            now = time()
+            if now > last + self.every + 10:
+                print('WOKE UP', now - start)
+                if self.run_wakeup:
+                    for command in self.run_wakeup.split('\\n'):
+                        Popen(command, creationflags=CREATE_NEW_CONSOLE, shell=True)
+                    exit()
+                    break
 
     def scan_sounds(self):
         """Scan the sound folder
@@ -129,6 +149,7 @@ def main():
     add('--no-sound', action='store_true', help='disable the sound, ex: to have custom commands do something better')
     add('--run-high', nargs='?', default=None, help='custom command to run when the battery level is too high')
     add('--run-low', nargs='?', default=None, help='custom command to run when the battery level is too low')
+    add('--run-wakeup', nargs='?', default=None, help='command to run when waking up')
 
     group = parser.add_argument_group('devcon')
     add = group.add_argument

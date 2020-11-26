@@ -100,11 +100,22 @@ python battery-alert.py --every 60 --low 25 --high 75
 This checks the battery level every 60 seconds, and raises an alarm if it goes below 25% or above 75%.
 
 ```
-python .\battery-alert.py --high 60 --run-high 'git status'
+python ./battery-alert.py --high 60 --run-high 'git status'
 ```
 
 This runs `git status` when the battery goes above 60%, useless but you get the point!
 You could have it launch firefox or a media player for example.
+
+
+Restart the script
+------------------
+On windows, when the computer wakes up, the shell can lose sound, so the script should be restarted.
+Create a `battery-alert.bat` file like this one:
+```
+py battery-alert.py --every 60 --low 36 --high 74 --run-wakeup "start battery-alert.bat\nexit"
+```
+
+And then the script will restart itself automatically.
 
 
 Sounds taken from
